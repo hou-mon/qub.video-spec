@@ -1,8 +1,8 @@
-# QUB — Information Cubed
+# qub — Information Cubed
 
 **A new class of AI-forward video container for query-native editing workflows.**
 
-QUB stores AI-derived understanding (shots, scenes, objects, dialogue, OCR, segmentation, embeddings) **inside the media container itself**, alongside traditional audio/video streams—so AI analysis is performed once at ingest and travels with the file forever.
+qub stores AI-derived understanding (shots, scenes, objects, dialogue, OCR, segmentation, embeddings) **inside the media container itself**, alongside traditional audio/video streams—so AI analysis is performed once at ingest and travels with the file forever.
 
 ---
 
@@ -16,7 +16,7 @@ This is wasteful, slow, and blocks the intelligent editorial workflows modern AI
 
 ## The Solution
 
-QUB wraps standard codecs (H.264, HEVC, ProRes, AAC, etc.) in a container that also carries **first-class semantic tracks**:
+qub wraps standard codecs (H.264, HEVC, ProRes, AAC, etc.) in a container that also carries **first-class semantic tracks**:
 
 | Track Type | What It Stores |
 |------------|----------------|
@@ -125,7 +125,7 @@ The spec is published to define the architecture and invite collaboration.
 
 ---
 
-## Why "QUB"?
+## Why "qub"?
 
 Information cubed — three dimensions of data:
 
