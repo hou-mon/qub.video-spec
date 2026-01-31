@@ -1,4 +1,4 @@
-# QUB Container Specification v1.1.0
+# qub Container Specification v1.1.0
 
 ## Information Cubed — AI-Forward Video Container
 
@@ -14,7 +14,7 @@
 
 ### 0.1 Scope
 
-QUB ("Information Cubed") is a container format that stores:
+qub ("Information Cubed") is a container format that stores:
 
 * **Media tracks** (video, audio, timecode, captions) in a codec-agnostic way
 * **AI tracks** (vision, audio analysis, segmentation, embeddings) aligned to the same timeline
@@ -77,7 +77,7 @@ An implementation MAY claim one or more of the following:
 
 ## 1. Executive Summary (Informative)
 
-QUB is a next-generation container designed to store not only audio and video, but the full semantic understanding of media. AI preprocessing is performed once at ingest and persisted alongside the media, enabling query-driven editing workflows and eliminating redundant inference.
+qub is a next-generation container designed to store not only audio and video, but the full semantic understanding of media. AI preprocessing is performed once at ingest and persisted alongside the media, enabling query-driven editing workflows and eliminating redundant inference.
 
 Design principles:
 
@@ -97,7 +97,7 @@ Design principles:
 
 A `.qub` file consists of:
 
-1. A fixed-size file header (`QUBHeader`)
+1. A fixed-size file header (`qubHeader`)
 2. A sequence of chunks (FourCC + Size + Flags + Payload)
 
 Header offsets point to required and optional top-level chunks:
@@ -127,7 +127,7 @@ Header offsets point to required and optional top-level chunks:
 ### 2.4 Chunk Flags
 
 ```c
-enum QUBChunkFlags {
+enum qubChunkFlags {
   CHUNK_FLAG_NONE        = 0x00000000,
   CHUNK_FLAG_COMPRESSED  = 0x00000001, // TLV_COMPRESSION describes compression
   CHUNK_FLAG_ENCRYPTED   = 0x00000002, // Payload is EncryptedChunk (§15)
@@ -139,7 +139,7 @@ enum QUBChunkFlags {
 
 | FourCC | Description               |
 | ------ | ------------------------- |
-| `QUB�` | File identifier (magic)   |
+| `qub�` | File identifier (magic)   |
 | `TDIR` | Track directory           |
 | `MTRK` | Media track data          |
 | `ATRK` | AI track data             |
@@ -154,11 +154,11 @@ enum QUBChunkFlags {
 ## 3. File Header (Normative)
 
 ```c
-struct QUBHeader {
-  uint8_t  magic[4];            // "QUB�"
+struct qubHeader {
+  uint8_t  magic[4];            // "qub�"
   uint16_t version_major;       // 1
   uint16_t version_minor;       // 1
-  uint32_t flags;               // QUBFlags
+  uint32_t flags;               // qubFlags
   uint8_t  uuid[16];            // File UUID
 
   int64_t  created_timestamp;   // Unix epoch (µs)
@@ -178,14 +178,14 @@ struct QUBHeader {
 ```
 
 ```c
-enum QUBFlags {
-  QUB_FLAG_STREAMABLE   = 0x0001,
-  QUB_FLAG_ENCRYPTED    = 0x0002,
-  QUB_FLAG_FRAGMENTED   = 0x0004,
-  QUB_FLAG_COMPLETE_AI  = 0x0008,
-  QUB_FLAG_PARTIAL_AI   = 0x0010,
-  QUB_FLAG_EMBEDDINGS   = 0x0020,
-  QUB_FLAG_REALTIME     = 0x0040,
+enum qubFlags {
+  qub_FLAG_STREAMABLE   = 0x0001,
+  qub_FLAG_ENCRYPTED    = 0x0002,
+  qub_FLAG_FRAGMENTED   = 0x0004,
+  qub_FLAG_COMPLETE_AI  = 0x0008,
+  qub_FLAG_PARTIAL_AI   = 0x0010,
+  qub_FLAG_EMBEDDINGS   = 0x0020,
+  qub_FLAG_REALTIME     = 0x0040,
 };
 ```
 
@@ -196,7 +196,7 @@ enum QUBFlags {
 ### 4.1 TLV Format
 
 ```c
-struct QUBTLV {
+struct qubTLV {
   uint16_t type;
   uint16_t flags;
   uint32_t length;
@@ -369,7 +369,7 @@ Media tracks:
 
 AI tracks:
 
-* `payload_type = 0`: QUB binary schema v1 (Section 13)
+* `payload_type = 0`: qub binary schema v1 (Section 13)
 * `payload_type = 1`: JSON UTF-8
 * `payload_type = 2`: MessagePack
 * `payload_type = 3`: Protobuf (requires TLV_SCHEMA_ID)
@@ -603,7 +603,7 @@ struct ProcessingEvent {
 
 ## 12. Media Codec Registry (Normative)
 
-QUB is codec-agnostic. Supported codec identifiers are carried in `TrackDescriptor.codec_fourcc`, with decoder configuration stored in `TLV_CODEC_CONFIG`.
+qub is codec-agnostic. Supported codec identifiers are carried in `TrackDescriptor.codec_fourcc`, with decoder configuration stored in `TLV_CODEC_CONFIG`.
 
 See Appendix C for the initial registry (H.264, HEVC, AV1, ProRes, AAC, FLAC, Opus, PCM, etc.).
 
@@ -1153,7 +1153,7 @@ A file SHOULD declare privacy level via `TLV_PRIVACY_LEVEL`:
 
 ## Appendix D — Query Language & Capabilities (Informative)
 
-QUB defines an **optional query layer** that operates over the Semantic Index (`SIDX`) and Embedding Store (`EMBD`). The container itself does **not mandate** a specific query engine implementation, but it **does define**:
+qub defines an **optional query layer** that operates over the Semantic Index (`SIDX`) and Embedding Store (`EMBD`). The container itself does **not mandate** a specific query engine implementation, but it **does define**:
 
 * The data required to answer semantic queries
 * A capability declaration contract
@@ -1205,7 +1205,7 @@ Semantics:
 
 ## Appendix E — Ingest Pipeline & Processing Order (Informative)
 
-QUB is designed around the principle **Inference Once, Query Forever**. The following ingest pipeline is RECOMMENDED to produce a complete, internally consistent file.
+qub is designed around the principle **Inference Once, Query Forever**. The following ingest pipeline is RECOMMENDED to produce a complete, internally consistent file.
 
 ### E.1 Reference Ingest Pipeline
 
@@ -1249,7 +1249,7 @@ QUB is designed around the principle **Inference Once, Query Forever**. The foll
 └──────┬──────────────────────────────┬─────┘
        ▼                              ▼
 ┌─────────────┐               ┌─────────────┐
-│ Provenance  │               │  QUB Muxer  │
+│ Provenance  │               │  qub Muxer  │
 │ Ledger      │               │             │
 └─────────────┘               └─────────────┘
 ```
@@ -1276,7 +1276,7 @@ QUB is designed around the principle **Inference Once, Query Forever**. The foll
 
 ## Appendix F — NLE Integration Guidelines (Informative)
 
-This section illustrates how QUB enables **editorial workflows that do not exist with current containers**.
+This section illustrates how qub enables **editorial workflows that do not exist with current containers**.
 
 ### F.1 Avid Media Composer
 
@@ -1311,4 +1311,4 @@ This section illustrates how QUB enables **editorial workflows that do not exist
 
 ---
 
-*End of QUB Container Specification v1.1.0*
+*End of qub Container Specification v1.1.0*
