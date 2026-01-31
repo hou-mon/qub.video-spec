@@ -1,6 +1,6 @@
-# Contributing to QUB
+# Contributing to qub
 
-Thank you for your interest in contributing to the QUB specification.
+Thank you for your interest in contributing to the qub specification.
 
 ## How to Contribute
 
