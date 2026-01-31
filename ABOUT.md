@@ -1,4 +1,4 @@
-# About QUB
+# About qub
 
 **QUB** is a new class of AI-forward media container that treats **semantic understanding as first-class data**.
 
